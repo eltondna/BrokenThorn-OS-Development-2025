@@ -9,12 +9,11 @@ The goal of this project is to make the series **more current and runnable in 20
 ## 📖 About This Project
 
 - Each tutorial corresponds to a **Git branch** in this repository.  
-  - Example: `paging-tutorial` contains the code and notes for the Paging tutorial.  
+  - Example: `Virtual_Memory_Manager` contains the code and notes for the Paging tutorial.  
 - The repository includes:
-  - The **original demo code**, adapted to run in a modern setup.
-  - **Amendments and fixes** compared to the older tutorial versions.
+  - **Demo Code with fix** which include the demo code provided from the tutorial with self-amendment which is runnable if you follow 
   - **Explanations and commentary** to clarify why certain changes are made.
-- Current progress: **Paging tutorial** (later tutorials will be added branch by branch).
+- Current progress: **Virtual_Memory_Manager** (later tutorials will be added branch by branch).
 
 ---
 
@@ -26,7 +25,14 @@ A huge appreciation goes to **BrokenThorn Development** for creating such an exc
 
 ## 🚀 How to Use
 
-1. Clone the repository:
+Follow The Tutorial 
+- If there is any trouble on running the demo code, clone the branch from the repo
+
+- i.e. Physical Memory Manager:
    ```bash
    git clone https://github.com/yourusername/brokenthron-osdev-2025.git
-   cd brokenthron-osdev-2025
+   git checkout Physical_Memory_Manager
+
+
+I will also add a description file in each tutorial branch to summeraise tutorial content and problems faced during the tutorial development and the approach I solve it.  
+
