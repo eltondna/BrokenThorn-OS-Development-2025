@@ -1,0 +1,9 @@
+megs: 32
+floppya: 1_44=floppy.IMA, status=inserted
+boot: a
+log: bochslog.txt
+mouse: enabled=0
+magic_break: enabled=1
+display_library: win32
+keyboard: type=mf, serial_delay=250, paste_delay=100000
+clock: sync=realtime

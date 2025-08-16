@@ -1,0 +1,16 @@
+/c/Users/User/Desktop/bochs-3.0/bochs-3.0/bochs.exe -f bochsrc.txt -dbg
+
+dd if=./SysBoot/Stage1/boot1.bin of=floppy.IMA bs=512 count=1 conv=notrunc
+
+
+link /BASE:0x00100000 /nologo /subsystem:native /entry:kernel_entry /nodefaultlib /align:512 ^
+/filealign:512 /out:KRNL32.exe ^
+cstd.obj string.obj cpu.obj entry.obj mmngr_phys.obj ^
+gdt.obj hal.obj idt.obj main.obj pic.obj pit.obj DebugDisplay.obj
+
+
+
+cl /c /nologo /GS- /GR- /EHs- /Oi /Zl /D__KERNEL__ /DARCH_X86 /D_DEBUG /I..\Header ^
+entry.cpp main.cpp DebugDisplay.cpp mmngr_phys.cpp exception.cpp panic.cpp ^
+..\Lib\cstd.cpp ..\Lib\string.cpp ..\Lib\stdio.cpp ^
+..\Hal\cpu.cpp ..\Hal\idt.cpp ..\Hal\gdt.cpp ..\Hal\Hal.cpp  ..\Hal\pic.cpp ..\Hal\pit.cpp 
