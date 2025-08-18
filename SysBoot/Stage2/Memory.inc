@@ -53,44 +53,6 @@ BiosMemoryMap:
     popad
     ret
 
-; ; Get Memory size for 64M configuration (32 bit)
-; ; return: 
-; ;       ax : KB between 1MB and 16MB
-; ;       bx : Number of 64 Blocks above 16MB
-; ;       ax = -1 and bx = 0 if error
-; BiosGetMemorySize64MB_32Bit:
-;     push ecx 
-;     push edx
-;     xor ecx, ecx
-;     xor edx, edx 
-
-;     mov ax, 0xe881
-;     int 0x15
-;     jc .error 
-;     cmp ah, 0x86        ; Unsupported function 
-;     je .error
-;     cmp ah, 0x80        ; Invalid Command  
-;     je .error 
-;     jcxz .use_ax        ; BIOS may store in ax, test if cx is 0
-;     movzx eax, cx          
-;     movzx ebx, dx
-;     jmp .done
-
-; .use_ax:
-;     movzx eax, ax          
-;     movzx ebx, bx
-; .done:
-;     pop edx
-;     pop ecx
-;     ret
-
-; .error:
-;     mov ax, -1 
-;     mov bx, 0
-;     pop edx 
-;     pop ecx
-;     ret
-
 
 BiosGetMemorySize64MB:
 	push	ecx

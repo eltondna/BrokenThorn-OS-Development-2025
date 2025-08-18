@@ -21,7 +21,7 @@
 00000000000i[IMG   ] Disk image modules
 00000000000i[IMG   ]   flat concat sparse dll growing undoable volatile vmware3
 00000000000i[IMG   ]   vmware4 vbox vpc vvfat
-00000000000i[MEM0  ] allocated memory at 000001b66f5f8040. after alignment, vector=000001b66f5f9000, block_size = 128K
+00000000000i[MEM0  ] allocated memory at 0000023262de3040. after alignment, vector=0000023262de4000, block_size = 128K
 00000000000i[MEM0  ] 32.00MB
 00000000000i[MEM0  ] mem block size = 0x00020000, blocks=256
 00000000000i[MEM0  ] rom at 0xfffe0000/131072 ('C:\Program Files\Bochs-3.0\BIOS-bochs-latest')
@@ -33,7 +33,7 @@
 00000000000i[DEV   ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[PLUGIN] init_dev of 'cmos' plugin device by virtual method
 00000000000i[CMOS  ] Using local time for initial clock
-00000000000i[CMOS  ] Setting initial clock to: Fri Aug 15 21:34:07   2025 tz=utc (time0=1755293647)
+00000000000i[CMOS  ] Setting initial clock to: Sun Aug 17 20:43:03   2025 tz=utc (time0=1755463383)
 00000000000i[PLUGIN] init_dev of 'dma' plugin device by virtual method
 00000000000i[DMA   ] channel 4 used by cascade
 00000000000i[PLUGIN] init_dev of 'pic' plugin device by virtual method
@@ -149,8 +149,9 @@
 00000000000i[PLUGIN] reset of 'parallel' plugin device by virtual method
 00000000000i[PLUGIN] reset of 'serial' plugin device by virtual method
 00000000000i[PLUGIN] reset of 'iodebug' plugin device by virtual method
+00000000000i[      ] set SIGINT handler to bx_debug_ctrlc_handler
 00000001740i[BIOS  ] BIOS BUILD DATE: 02/16/25
-00000198457i[WINGUI] dimension update x=720 y=400 fontheight=16 fontwidth=9 bpp=8
+00000111485i[WINGUI] dimension update x=720 y=400 fontheight=16 fontwidth=9 bpp=8
 00000315058i[KBD   ] reset-disable command received
 00000317840i[BIOS  ] Starting rombios32
 00000318278i[BIOS  ] Shutdown flag 0
@@ -189,27 +190,4 @@
 00001488154i[BXVGA ] VBE known Display Interface b0c0
 00001488194i[BXVGA ] VBE known Display Interface b0c5
 00001489615i[VBIOS ] VBE Bios ID: vbe.c 2025-01-08
-04203047277i[BIOS  ] Booting from 0000:7c00
-04728242422i[CPU0  ] WARNING: HLT instruction with IF=0!
-602998034763p[      ] >>PANIC<< SIGNAL 2 caught
-604813531420i[CPU0  ] CPU is in protected mode (halted)
-604813531420i[CPU0  ] CS.mode = 32 bit
-604813531420i[CPU0  ] SS.mode = 32 bit
-604813531420i[CPU0  ] EFER = 0x00000000: ffxsr nxe lma lme sce
-604813531420i[CPU0  ] | EAX=00000000  EBX=00000000  ECX=ffffffff  EDX=0000005c
-604813531420i[CPU0  ] | ESP=0008fff0  EBP=0008fff0  ESI=001000ba  EDI=00000a48
-604813531420i[CPU0  ] | EFLAGS=00000046: id vip vif ac vm rf nt IOPL=0 of df if tf sf ZF af PF cf
-604813531420i[CPU0  ] | SEG sltr(index|ti|rpl)     base    limit G D
-604813531420i[CPU0  ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
-604813531420i[CPU0  ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-604813531420i[CPU0  ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-604813531420i[CPU0  ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-604813531420i[CPU0  ] |  FS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-604813531420i[CPU0  ] |  GS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-604813531420i[CPU0  ] | EIP=001007a0 (001007a0)
-604813531420i[CPU0  ] | CR0=0x60000011: pg CD NW ac wp ne ET ts em mp PE
-604813531420i[CPU0  ] | CR2=0x00000000
-604813531420i[CPU0  ] | CR3=0x00000000
-604813531420i[CPU0  ] | CR4=0x00000000: lass uintr pks cet pke smap smep keylock osxsave pcid fsgsbase smx vmx la57 umip osxmmexcpt osfxsr pce pge mce pae pse de tsd pvi vme
-604813531420i[CPU0  ] 0x001007a0>> jmp .-2  (0x001007a0) : EBFE
-604813531420i[CMOS  ] Last time: 1755444850 tz=utc (Sun Aug 17 15:34:10   2025)
+01577587737i[BIOS  ] Booting from 0000:7c00

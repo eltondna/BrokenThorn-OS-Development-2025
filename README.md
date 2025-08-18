@@ -1,38 +1,11 @@
-# BrokenThorn OS Development Series (2025 Edition)
+# Virtual Memory Manager
 
-This repository is a modernized walkthrough of the legendary **BrokenThorn OS Development Series** — one of the most influential tutorials for beginner operating system developers.  
+# Amendment in SysBoot
+### 1. Add Memory.inc
+What it does is create a Page Directory for the kernel. And create 2 Page Table 
+`PAGE_TABLE_0` and `PAGE_TABLE_768`
 
-The goal of this project is to make the series **more current and runnable in 2025**, while preserving the structure and learning value of the original work. Each tutorial’s code has been carefully adapted, updated, and tested to run on today’s toolchains and environments.
+- `PAGE_TABLE_768` map 4MB from the start of kernel address (i.e. 0x10000) to higher address `0xC0000000`. So after paging is enabled, `0xC0000000` is translated to `0x10000`
 
----
-
-## 📖 About This Project
-
-- Each tutorial corresponds to a **Git branch** in this repository.  
-  - Example: `Virtual_Memory_Manager` contains the code and notes for the Paging tutorial.  
-- The repository includes:
-  - **Demo Code with fix** which include the demo code provided from the tutorial with self-amendment which is runnable if you follow 
-  - **Explanations and commentary** to clarify why certain changes are made.
-- Current progress: **Virtual_Memory_Manager** (later tutorials will be added branch by branch).
-
----
-
-## 🙏 Credits
-
-A huge appreciation goes to **BrokenThorn Development** for creating such an excellent OS tutorial series. It has inspired countless developers to dive into OSDev, and this repository is intended as a respectful continuation and modernization of their great work.  
-
----
-
-## 🚀 How to Use
-
-Follow The Tutorial 
-- If there is any trouble on running the demo code, clone the branch from the repo
-
-- i.e. Physical Memory Manager:
-   ```bash
-   git clone https://github.com/yourusername/brokenthron-osdev-2025.git
-   git checkout Physical_Memory_Manager
-
-
-I will also add a description file in each tutorial branch to summeraise tutorial content and problems faced during the tutorial development and the approach I solve it.  
+- `PAGE_TABLE_0` do a identity mapping to map first 4MB physical address `0x00000000` to the same virtual address. The benefits of doing this is to allow the bootloader to access the code and data in the low memory region (i.e. 0x0 to 0x00400000). In this way we dont need to worry about moving the previous developed stuff to the higher half kernel.
 

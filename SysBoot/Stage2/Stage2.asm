@@ -150,6 +150,9 @@ enterStage3:
 ;******************************************************
 bits 32
 
+%include "Paging.inc"
+
+
 Stage3:
     mov ax, DATA_DESC
     mov ds, ax
@@ -157,6 +160,8 @@ Stage3:
     mov es, ax
     mov esp, 0x90000
     call ClrScr32
+    call EnablePaging
+
 
 ;-------------------------------;
 ; Copy kernel to 1MB		;
