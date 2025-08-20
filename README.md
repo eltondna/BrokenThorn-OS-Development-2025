@@ -11,3 +11,16 @@ What it does is create a Page Directory for the kernel. And create 2 Page Table
 
 #### 2. Change IMAGE_PMODE_BASE to 0xC0000000
 - Since paging is enabled, we should treat all the address from now on as `virtual`. When we jump to the kernel execution code, we are jumping to `0xC0000000 + offset from the .exe header`
+
+
+#### Implementation in the Kernel
+
+#### 1. Page Table 
+
+#### 2. Page Directory 
+
+#### 3. Virtual Memory Manager
+
+There is a little mistake in the demo I think is a Typo. In the `vmmngr_pdirectory_lookup_entry` function, the `PAGE_DIRECTORY_INDEX()` macro function should be used instead of the  `PAGE_TABLE_INDEX()`
+
+
