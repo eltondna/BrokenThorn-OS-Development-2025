@@ -86,7 +86,6 @@ There is nothing specific to say about the Virtual Memory Maager API. Here I jus
 ```asm
 Register:
     cr0: & cr0 with 0x80000000 (bit 31) to enable Paging
-    cr2: 
     cr3: Store the page directory base address
 
 Instruction:
