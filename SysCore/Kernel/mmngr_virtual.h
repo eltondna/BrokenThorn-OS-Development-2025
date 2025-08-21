@@ -20,12 +20,13 @@ struct pdirectory{
     pd_entry m_entries[PAGE_DIRECTORY_SIZE];
 };
 
-extern void MmMapPage(void* phys,void* virt);
+extern void vmmngr_map_page(void* phys,void* virt);
 extern void vmmngr_initialize();
-extern void vmmngr_alloc_page(pt_entry * e);
+extern bool vmmngr_alloc_page(pt_entry * e);
 extern void vmmngr_free_page(pt_entry * e);
 extern bool vmmngr_switch_directory(pdirectory *dir);
-extern void vmmngr_get_directory();
+extern pdirectory* vmmngr_get_directory();
+// Flush One Page entry in the TLB
 extern void vmmngr_flush_TLB(virtual_addr addr);
 extern uint32_t vmmngr_ptable_virt_to_idx(virtual_addr addr);
 extern uint32_t vmmngr_pdirectory_virt_to_idx(virtual_addr addr);

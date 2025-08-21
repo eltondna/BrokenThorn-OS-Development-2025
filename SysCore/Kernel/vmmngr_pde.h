@@ -18,7 +18,7 @@ enum PAGE_PGE_FLAG{
 };
 
 typedef uint32_t pd_entry;
-extern void pd_entry_add_attrib(pd_entry* e, uint32_t attrib);
+extern void pd_entry_set_attrib(pd_entry* e, uint32_t attrib);
 extern void pd_entry_del_attrib(pd_entry* e, uint32_t attrib);
 extern void pd_entry_set_frame(pd_entry* e, physical_addr addr);
 extern bool pd_entry_is_present(pd_entry e);

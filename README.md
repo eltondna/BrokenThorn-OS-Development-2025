@@ -15,7 +15,7 @@ What it does is create a Page Directory for the kernel. And create 2 Page Table
 
 #### Implementation in the Kernel
 
-#### 1. Page Table Entry 
+**1. Page Table Entry**
 The Page Table Entry has the following structure:
 ```cpp 
     enum PAGE_PTE_FLAGS{
@@ -54,11 +54,8 @@ On x86, per-page cache behavior is controlled by PWT/PCD/PAT bits. The modes are
 
 **Rules of thumb**: Use WB for regular kernel pages, UC for device MMIO, and WC (if available) for framebuffers. Avoid mapping the same physical page with different cache modes at different virtual addresses.
 
-
-
-#### 2. Page Directory Entry 
+**2. Page Directory Entry** 
 The page directory entry has more or less the same structure as a page table entry. This is deliberately design since remember Page Directory Entry will be a Page Table if 4MB page is activated. So, the high 20 bits are the page table physical address in 4KB mode or the directly 4MB frame starting address in 4MB mode:
-
 
 ```cpp
 enum PAGE_PGE_FLAG{
@@ -80,7 +77,18 @@ enum PAGE_PGE_FLAG{
 
 There is a little mistake in the demo I think is a Typo. In the `vmmngr_pdirectory_lookup_entry` function, the `PAGE_DIRECTORY_INDEX()` macro function should be used instead of the  `PAGE_TABLE_INDEX()`.
 
+Also for initializeing the paging function, for allocating memory for the page directory, the tutorial allocate 3 blocks of 4KB for that. But here in my opinion 1 4KB is actually enough. If this is a mistake, feel free to let me know in the discussion of your thought!!
 
 
 
+There is nothing specific to say about the Virtual Memory Maager API. Here I just want to summeraise the assembly code and register that are needed for enabling paging:
 
+```asm
+Register:
+    cr0: & cr0 with 0x80000000 (bit 31) to enable Paging
+    cr2: 
+    cr3: Store the page directory base address
+
+Instruction:
+    invlpg addr : Flush the TLB entries of virtual address (addr)
+```

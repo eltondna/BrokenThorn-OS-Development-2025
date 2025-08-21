@@ -195,7 +195,7 @@ uint32_t pmmngr_get_block_size (){
 }
 
 
-void pmmngr_paging_table(bool b){
+void pmmngr_paging_enable(bool b){
     #ifdef _MSC_VER
     _asm {
         mov eax, cr0

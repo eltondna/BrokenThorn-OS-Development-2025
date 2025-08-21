@@ -1,6 +1,6 @@
 #include "vmmngr_pde.h"
 
-inline void pd_entry_add_attrib(pd_entry* e, uint32_t attrib){
+inline void pd_entry_set_attrib(pd_entry* e, uint32_t attrib){
     *e |= attrib;
 }
 inline void pd_entry_del_attrib(pd_entry* e, uint32_t attrib){

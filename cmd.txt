@@ -6,11 +6,13 @@ dd if=./SysBoot/Stage1/boot1.bin of=floppy.IMA bs=512 count=1 conv=notrunc
 link /BASE:0x00100000 /nologo /subsystem:native /entry:kernel_entry /nodefaultlib /align:512 ^
 /filealign:512 /out:KRNL32.exe ^
 cstd.obj string.obj cpu.obj entry.obj mmngr_phys.obj ^
-gdt.obj hal.obj idt.obj main.obj pic.obj pit.obj DebugDisplay.obj
+gdt.obj hal.obj idt.obj main.obj pic.obj pit.obj DebugDisplay.obj ^
+vmmngr_pte.obj vmmngr_pde.obj mmngr_virtual.obj 
 
 
 
 cl /c /nologo /GS- /GR- /EHs- /Oi /Zl /D__KERNEL__ /DARCH_X86 /D_DEBUG /I..\Header ^
-entry.cpp main.cpp DebugDisplay.cpp mmngr_phys.cpp exception.cpp panic.cpp ^
+entry.cpp main.cpp DebugDisplay.cpp exception.cpp panic.cpp ^
+mmngr_phys.cpp vmmngr_pte.cpp vmmngr_pde.cpp mmngr_virtual.cpp ^
 ..\Lib\cstd.cpp ..\Lib\string.cpp ..\Lib\stdio.cpp ^
 ..\Hal\cpu.cpp ..\Hal\idt.cpp ..\Hal\gdt.cpp ..\Hal\Hal.cpp  ..\Hal\pic.cpp ..\Hal\pit.cpp 
