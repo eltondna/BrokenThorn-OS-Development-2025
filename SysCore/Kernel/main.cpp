@@ -3,6 +3,7 @@
 #include "boot_info.h"
 #include "mmngr_phys.h"
 #include "exception.h"
+#include "mmngr_virtual.h"
 
 // Format of each memory map entry
 struct memory_region{
@@ -102,19 +103,9 @@ int _cdecl main (multiboot_info* bootinfo, uint32_t memorymapEntryCount) {
 	DebugPrintf ("\npmm regions initialized: %i allocation blocks; used or reserved blocks: %i\nfree blocks: %i\n",
 		pmmngr_get_total_block_count(),  pmmngr_get_use_block_count (), pmmngr_get_free_block_count ());
 
+	vmmngr_initialize();
 
-	DebugSetColor (0x12);
-	uint32_t* p = (uint32_t *)pmmngr_alloc_block();
-	DebugPrintf("\np allocated at 0x%x\n", p);
-	uint32_t* p2 = (uint32_t*) pmmngr_alloc_regions(3);
-	DebugPrintf("p2 allocated at 0x%x\n", p2);
-
-	pmmngr_free_block(p);
-	p = (uint32_t *) pmmngr_alloc_regions(2);
-	DebugPrintf("p is now allocated at 0x%x\n", p);
-
-	pmmngr_free_regions(p,2);
-	pmmngr_free_regions(p2, 3);
-	return 0;
-
+	_asm cli
+	_asm hlt
+	for(;;);
 }
