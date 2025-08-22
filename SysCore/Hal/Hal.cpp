@@ -99,8 +99,8 @@ void _cdecl disable(){
     #endif
 }
 
-void _cdecl setvect(int intno, void (*handler)(void)){
-    i86_install_ir(intno, I86_IDT_DESC_PRESENT | I86_IDT_DESC_BIT32, 0x8, (I86_IRQ_HANDLER) handler);
+void _cdecl setvect(int intno, void (__cdecl & handler)()){
+    i86_install_ir(intno, I86_IDT_DESC_PRESENT | I86_IDT_DESC_BIT32, 0x8,handler);
 }
 
 

@@ -1,7 +1,12 @@
 #ifndef _EXCEPTION_H
 #define _EXCEPTION_H
 
-#include <stdint.h>
+#include "stdint.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern void _cdecl divide_by_zero(uint32_t eip, uint32_t cs, uint32_t eflags);
 extern void _cdecl single_step_trap(uint32_t eip, uint32_t cs, uint32_t eflags);
@@ -28,6 +33,8 @@ extern void _cdecl machine_check_fault(uint32_t eip, uint32_t cs, uint32_t eflag
 extern void _cdecl simd_fpu_fault(uint32_t eip, uint32_t cs, uint32_t eflags);
 
 
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif

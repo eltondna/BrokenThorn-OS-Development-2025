@@ -5,9 +5,10 @@ dd if=./SysBoot/Stage1/boot1.bin of=floppy.IMA bs=512 count=1 conv=notrunc
 
 link /BASE:0x00100000 /nologo /subsystem:native /entry:kernel_entry /nodefaultlib /align:512 ^
 /filealign:512 /out:KRNL32.exe ^
-cstd.obj string.obj cpu.obj entry.obj mmngr_phys.obj ^
+cstd.obj string.obj cpu.obj entry.obj stdio.obj ^
 gdt.obj hal.obj idt.obj main.obj pic.obj pit.obj DebugDisplay.obj ^
-vmmngr_pte.obj vmmngr_pde.obj mmngr_virtual.obj 
+mmngr_phys.obj vmmngr_pte.obj vmmngr_pde.obj mmngr_virtual.obj ^
+exception.obj panic.obj
 
 
 

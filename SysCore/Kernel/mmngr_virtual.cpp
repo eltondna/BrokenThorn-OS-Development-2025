@@ -116,7 +116,7 @@ void vmmngr_initialize(){
       return;
     
     memset(table, 0, sizeof(ptable));
-    int i;
+    int i = 0;
     int frame = 0x0;
     int virt = 0x00000000;
 

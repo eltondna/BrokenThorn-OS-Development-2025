@@ -2,7 +2,7 @@
 #include "../Header/Hal.h"
 #include "boot_info.h"
 #include "mmngr_phys.h"
-
+#include "exception.h"
 
 // Format of each memory map entry
 struct memory_region{
@@ -33,7 +33,29 @@ int _cdecl main (multiboot_info* bootinfo, uint32_t memorymapEntryCount) {
 	DebugPrintf (" Initializing Hardware Abstraction Layer (HAL.lib)...                           \n");
 	hal_initialize();
 
-	
+
+	// Enable first 20 software interrupt 
+	enable();
+	setvect(0, (void (__cdecl &)(void))divide_by_zero);
+	setvect(1, (void(__cdecl &)(void))single_step_trap);
+	setvect(2, (void(__cdecl &)(void))nmi_trap);
+	setvect(3, (void(__cdecl &)(void))breakpoint_trap);
+	setvect(4, (void(__cdecl &)(void))overflow_trap);
+	setvect(5, (void(__cdecl &)(void))bounds_check_fault);
+	setvect(6, (void(__cdecl &)(void))invalid_opcode_fault);
+	setvect(7, (void(__cdecl &)(void))no_device_fault);
+	setvect(8, (void(__cdecl &)(void))double_fault_abort);
+	setvect(10, (void(__cdecl &)(void))invalid_tss_fault);
+	setvect(11, (void(__cdecl &)(void))no_segment_fault);
+	setvect(12, (void(__cdecl &)(void))stack_fault);
+	setvect(13, (void(__cdecl &)(void))general_protection_fault);
+	setvect(14, (void(__cdecl &)(void))page_fault);
+	setvect(16, (void(__cdecl &)(void))fpu_fault);
+	setvect(17, (void(__cdecl &)(void))alignment_check_fault);
+	setvect(18, (void(__cdecl &)(void))machine_check_fault);
+	setvect(19, (void(__cdecl &)(void))simd_fpu_fault);
+
+
 	uint32_t kernelSize = 0;
 	_asm mov word ptr [kernelSize], dx
 
@@ -80,6 +102,19 @@ int _cdecl main (multiboot_info* bootinfo, uint32_t memorymapEntryCount) {
 	DebugPrintf ("\npmm regions initialized: %i allocation blocks; used or reserved blocks: %i\nfree blocks: %i\n",
 		pmmngr_get_total_block_count(),  pmmngr_get_use_block_count (), pmmngr_get_free_block_count ());
 
+
+	DebugSetColor (0x12);
+	uint32_t* p = (uint32_t *)pmmngr_alloc_block();
+	DebugPrintf("\np allocated at 0x%x\n", p);
+	uint32_t* p2 = (uint32_t*) pmmngr_alloc_regions(3);
+	DebugPrintf("p2 allocated at 0x%x\n", p2);
+
+	pmmngr_free_block(p);
+	p = (uint32_t *) pmmngr_alloc_regions(2);
+	DebugPrintf("p is now allocated at 0x%x\n", p);
+
+	pmmngr_free_regions(p,2);
+	pmmngr_free_regions(p2, 3);
 	return 0;
 
 }

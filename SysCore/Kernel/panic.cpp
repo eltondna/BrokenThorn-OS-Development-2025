@@ -1,7 +1,7 @@
-#include "Hal.h"
+#include "../Header/Hal.h"
 #include "DebugDisplay.h"
-#include "stdio.h"
-#include "stdarg.h"
+#include "../Header/stdio.h"
+#include "../Header/stdarg.h"
 
 //! looks cool ^^
 static char* sickpc = " \
@@ -36,5 +36,5 @@ void _cdecl kernel_panic(const char* fmt, ...){
     vsprintf(buf, fmt, args);
     va_end(args);
 
-    DebugPrintf("*** STOP: %\n\n", buf);
+    DebugPrintf("*** STOP: %s\n\n", buf);
 }
