@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 *.obj
+=======
+**/*.obj
+bochslog.txt
+>>>>>>> Virtual_Memory_Manager

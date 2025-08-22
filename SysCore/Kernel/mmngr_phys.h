@@ -44,13 +44,13 @@ extern uint32_t pmmngr_get_block_size ();
 /* Paging Setting */
 
 // // ！ Enable or disable Paging 
-extern void pmmngr_paging_table(bool);
+extern void pmmngr_paging_enable(bool);
 
 // // ! Test Paging is enabled
 extern bool pmmngr_is_paging();
 
 // // ! Loads the page directory base register (PDBR)
-extern void pmmngr_load_PDBR();
+extern void pmmngr_load_PDBR(physical_addr);
 
 // // ! Get PDBR physical address
 extern physical_addr pmmngr_get_PDBR();

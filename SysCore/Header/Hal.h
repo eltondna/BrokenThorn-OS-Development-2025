@@ -27,9 +27,6 @@
 #define interrupt
 #endif
 
-#define far
-#define near
-
 extern int              _cdecl hal_initialize();
 extern int              _cdecl hal_shutdown();
 extern void              _cdecl geninterrupt(int n);
@@ -44,7 +41,7 @@ extern void             _cdecl enable();
 // Disable all hardware interrupt
 extern void             _cdecl disable();
 // Set new Interrupt vector
-extern void _cdecl setvect(int intno, void (*handler)(void));
+extern void _cdecl setvect(int intno, void (__cdecl & handler)());
 // Return current Interrupt vector
 extern void *           _cdecl getvect(int intno);
 //! returns cpu vender

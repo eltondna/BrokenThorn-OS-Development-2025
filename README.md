@@ -37,7 +37,7 @@ A huge appreciation goes to **BrokenThorn Development** for creating such an exc
 I will also add a description file in each tutorial branch to summeraise tutorial content and problems faced during the tutorial development and the approach I solve it.  
 
 
-## ⚙️ Set up from Bootloader to Kernel (Tutorial 12 - 13)
+## Set up from Bootloader to Kernel (Tutorial 12 - 13)
 There is a a loophole (I guess :( ) in the tutorial website which the kernel Setup for MSVC++ 2005 is not linked to the series if you follow along.... Thanks to Google and ChatGPT, I have a totally different setup which spends me around 2 days to making the code runnable.
 
 If you want to follow the set up for the tutorial, here is the link : http://www.brokenthorn.com/Resources/OSDevMSVC.html
@@ -107,6 +107,6 @@ If you want to run normal, just ignore the `-dbg`
 
 Last Big Tip: Learn to debug in bochs is useful !! Don't think this is silly, I have also tried couple time stepping in every instruction just to check why i can't run the code in Tutorial 12 and 13. (Yeah I am a stupid person)
 
-The road of developing OS is tough, but is worth everything once you solve it. Be patience :0) and feel free to discuss with me in the github discussion or directly send email to me (eltonwong32@gmail.com) if there are any problem and improvement for this repo. (I know the set up and could be better.) Til next time :)
+The road of developing OS is tough, but is worth everything once you solve it. Be patience :0) and feel free to discuss with me in the github discussion or directly send email to me (eltonwong32@gmail.com) if there are any problem and improvement for this repo. (I know the set up and could be better.)
 
 

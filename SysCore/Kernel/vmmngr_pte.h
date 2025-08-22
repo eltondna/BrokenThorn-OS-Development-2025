@@ -24,7 +24,7 @@ enum PAGE_PTE_FLAGS{
 
 typedef uint32_t pt_entry;
 
-extern void          pt_entry_add_attrib(pt_entry * e, uint32_t attrib);
+extern void          pt_entry_set_attrib(pt_entry * e, uint32_t attrib);
 extern void          pt_entry_delete_attrib(pt_entry * e, uint32_t attrib);
 extern void          pt_entry_set_frame(pt_entry * e, physical_addr addr);
 extern bool          pt_entry_is_present(pt_entry e);
