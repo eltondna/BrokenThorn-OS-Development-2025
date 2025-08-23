@@ -86,7 +86,9 @@ nasm -fbin Stage2.asm -o KRNLDR.SYS
 
 **Use WinImage:**
 1. Create a new image and specify size (1.44MB)
+![WinImage](./WinImage1.png)
 2. Import KRNLDR.SYS and KRNL32.exe
+![WinImage](./WinImage2.png)
 3. Save the new floppy image
 
 Now we have our Stage 2 and kernel inside the floppy image, what we left ...... Yes the bootloader. The last step is to inject our bootloader (i.e. boot1.bin) into the first 512 bytes of our floppy disk.
@@ -104,6 +106,10 @@ YEAHHHHHH! We made it. To run the OS, open the MSYS32 MINGW64 Shell, cd to the r
 
 ```
 If you want to run normal, just ignore the `-dbg`
+
+
+![Kernel](./KernelDis.png)
+
 
 Last Big Tip: Learn to debug in bochs is useful !! Don't think this is silly, I have also tried couple time stepping in every instruction just to check why i can't run the code in Tutorial 12 and 13. (Yeah I am a stupid person)
 
