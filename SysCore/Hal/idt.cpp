@@ -48,9 +48,6 @@ static void i86_default_handler () {
 
 #ifdef _DEBUG
 	DebugGotoXY(0, 10);
-	// DebugClrScr (0x18);
-	// DebugGotoXY (0,0);
-	// DebugSetColor (0x1e);
 	DebugPuts ("*** [i86 Hal] i86_default_handler: Unhandled Exception");
 #endif
 	for(;;);

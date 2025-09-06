@@ -168,7 +168,7 @@ extern bool kkybrd_get_ctrl();
 extern bool kkybrd_get_shift();
 
 // ! Returns last command
-extern bool kkybrd_ignore_resend();
+extern void kkybrd_ignore_resend();
 extern bool kkybrd_check_resend();
 
 // ! Returns status of tests (controller) kkybrid_self_test run the test

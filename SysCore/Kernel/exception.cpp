@@ -2,9 +2,15 @@
 #include "Hal.h"
 #include "stdint.h"
 
-
-
 extern void _cdecl kernel_panic(const char* fmt, ...);
+/*
+    Adjust for the ebp 
+    Before every function
+    push ebp 
+    mov ebp, esp
+    
+*/
+
 #ifdef _MSC_VER
 #define intstart()\
         _asm cli \

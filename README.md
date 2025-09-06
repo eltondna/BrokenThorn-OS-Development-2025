@@ -22,6 +22,8 @@ Port    R/W     Desc
 One point to note most of the time we wait the keyboard controller to be ready for the next command (test bit 0). Otherwise the previous command will be discarded and the new one will start executing, which is undesirable.
 
 
+Another point to clarify that port 0x60 and 0x64 are the IO port for keyboard controller. We could send command to configure both keyboard encoder and keyboard controller through these ports. If the command is for keyboard encoder, it is sent to encoder in the keyboard by the keyboard controller in our motherboard 
+
 
 
 

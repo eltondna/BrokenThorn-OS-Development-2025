@@ -30,7 +30,7 @@ extern "C" interrupt void i86_pit_irq(void)
     }
 }
 
-void  i86_pit_send_command(uint8_t cmd){
+void i86_pit_send_command(uint8_t cmd){
     outportb(I86_PIT_REG_COMMAND, cmd);
 }
 void  i86_pit_send_data(uint16_t data, uint8_t counter){
