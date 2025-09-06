@@ -173,4 +173,10 @@ int DebugPrintf (const char* str, ...){
     return 0;
 }
 
+void DebugGetXY(unsigned int * x, unsigned int * y){
+    *x = _xPos;
+    *y = _yPos;
+}
 
+int  DebugGetHorizontal(){return 80;}
+int  DebugGetVertical(){return 24;}
