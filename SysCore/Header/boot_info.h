@@ -1,6 +1,6 @@
 #ifndef _BOOTINFO_H
 #define _BOOTINFO_H
-#include "stdint.h"
+#include "../Header/stdint.h"
 
 #ifdef _MSC_VER
 #pragma pack (push, 1)
@@ -8,7 +8,9 @@
 
 struct multiboot_info{
     uint32_t flags;
-    uint32_t memorySize;
+    // uint64_t memorySize;
+    uint32_t	m_memoryLo;
+    uint32_t	m_memoryHi;
     uint32_t bootDevice;
     uint32_t cmdLine;
     uint32_t mods_count;

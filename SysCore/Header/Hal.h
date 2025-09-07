@@ -46,7 +46,7 @@ extern void _cdecl setvect(int intno, void (__cdecl & handler)());
 extern void *           _cdecl getvect(int intno);
 //! returns cpu vender
 extern const char*		_cdecl get_cpu_vender ();   
-//! returns current tick count (only for demo)
+//! returns current tick count 
 extern int				_cdecl get_tick_count ();
 extern bool				 get_pit_state();
 

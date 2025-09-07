@@ -5,12 +5,12 @@
 
 
 // Keyboard Encoder Configuration
-enum KYBRD_ENCODER_IO{
+enum KYBRD_ENCODER_IO {
     KYBRD_ENC_INPUT_BUF     = 0x60,
     KYBRD_ENC_CMD_RED       = 0x60
 };
 
-enum KYBRD_ENCODER_IO{
+enum KYBRD_ENC_CMDS {
     KYBRD_ENC_CMD_SET_LED               = 0xED,
     KYBRD_ENC_CMD_ECHO                  = 0xEE,
     KYBRD_ENC_CMD_SCAN_CODE_SET         = 0xF0,
@@ -201,7 +201,7 @@ uint8_t     kybrd_ctrl_read_status();
 void        kybrd_ctrl_send_cmd(uint8_t);
 uint8_t     kybrd_enc_read_buf();
 void        kybrd_enc_send_cmd(uint8_t);
-void _cdecl i86_kybrd_irq();
+
 
 uint8_t kybrd_ctrl_read_status(){
     return inportb(KYBRD_CTRL_STATS_REG);
@@ -231,17 +231,6 @@ void kybrd_enc_send_cmd(uint8_t cmd){
 }
 
 
-
-extern "C" interrupt void i86_kybrd_irq(){
-    #ifdef _MSC_VER
-    _asm {
-        pushad
-        call kybrd_handler_c
-        popad
-        iretd
-    } 
-    #endif
-}
 
 static void __cdecl kybrd_handler_c(void){
     
@@ -329,6 +318,18 @@ static void __cdecl kybrd_handler_c(void){
         }
     }
 }
+
+extern "C" interrupt void i86_kybrd_irq(){
+    #ifdef _MSC_VER
+    _asm {
+        pushad
+        call kybrd_handler_c
+        popad
+        iretd
+    } 
+    #endif
+}
+
 
 bool kkybrd_get_scroll_lock(){
     return _scrolllock;
