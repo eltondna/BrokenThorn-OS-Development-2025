@@ -5,9 +5,9 @@
 bits 16
 %include "Floppy16.inc"
 
-%define ROOT_OFFSET 0x7e00
-%define FAT_SEG     0x7c0
-%define ROOT_SEG    0x7e0
+%define ROOT_OFFSET 0x2e00
+%define FAT_SEG     0x2c0
+%define ROOT_SEG    0x2e0
 
 
 ; *******************************************************
@@ -24,16 +24,18 @@ LoadRoot:
     pusha
     push es
     ; 1. the size of root directory -> cx
-    mov ax, word [bpbRootEntries]
-    mov bx, 0x20
-    mul bx
+    xor cx, cx
+    xor dx, dx
+
+    mov ax, 32
+    mul word [bpbRootEntries]
     div word [bpbBytesPerSector]
-    mov cx, ax
+    xchg ax, cx
 
     ; 2. starting address of the root directory -> ax
-    mov ax, word [bpbSectorPerFAT]
-    mov bl, byte[bpbNumberOfFATs]
-    mul bx
+    mov al, BYTE [bpbNumberOfFATs]
+    mul     WORD [bpbSectorPerFAT]
+
     add ax, word [bpbReservedSector]
     mov word [datasector], ax
     add word [datasector], cx
@@ -60,7 +62,7 @@ LoadFAT:
 
     xor ax, ax
     mov al, byte[bpbNumberOfFATs]
-    mul word[bpbSectorPerFAT]
+    mul     word[bpbSectorPerFAT]
     mov cx, ax
 
     mov ax, word[bpbReservedSector]
@@ -80,40 +82,6 @@ LoadFAT:
 ; parm/ DS:SI => File name
 ; ret/ AX => File index number in directory table. -1 if error
 ;*******************************************
-; FindFile:
-; 	push	cx						; store registers
-; 	push	dx
-; 	push	bx
-;     mov bx, si
-;     mov cx , word[bpbRootEntries]
-;     mov di, ROOT_OFFSET
-;     cld
-
-; .loop:
-;     push cx
-;     mov cx, 11
-;     mov si, bx
-;     push di
-;     rep cmpsb
-;     pop di
-;     je .found
-;     pop cx
-;     add di, 32
-;     loop .loop
-
-; .not_found:
-; 	pop	bx					
-; 	pop	dx
-; 	pop	cx
-;     mov ax , -1
-;     ret
-
-; .found:
-;     pop ax                
-; 	pop	bx	
-; 	pop	dx
-; 	pop	cx
-;     ret
 
 FindFile:
 
@@ -131,9 +99,9 @@ FindFile:
 .LOOP:
 	push    cx
 	mov     cx, 11					; eleven character name. Image name is in SI
-	mov	si, bx						; image name is in BX
+    mov	    si, bx					; image name is in BX
  	push    di
-     rep  cmpsb							; test for entry match
+    rep  cmpsb							; test for entry match
 	pop     di
 	je      .Found
 	pop     cx
@@ -170,18 +138,20 @@ LoadFile:
     .find_file:
         push bx
         push bp
-
         call FindFile
         cmp ax, -1
         jne .load_image_pre
+        
         pop bp
         pop bx
+        pop ecx 
         mov ax , -1
         ret
 
     ; ax should contain the index of file in root entry
     .load_image_pre:
         sub	edi, ROOT_OFFSET
+        sub eax, ROOT_OFFSET
 
         push word ROOT_SEG
         pop es
@@ -202,10 +172,11 @@ LoadFile:
         xor cx, cx
         mov cl , BYTE [bpbSectorPerCluster]
         call ReadSectors
+        
         pop ecx
         inc ecx
-
         push ecx
+        
         push bx
         push es
         mov ax, FAT_SEG
@@ -219,6 +190,7 @@ LoadFile:
         shr dx, 0x0001
         add cx, dx
 
+        mov bx, 0
         add bx, cx
         mov dx, WORD [es:bx]
         test ax, 0x0001
@@ -241,8 +213,6 @@ LoadFile:
     pop ecx
     xor ax, ax
     ret
-
-
 
 %endif
 

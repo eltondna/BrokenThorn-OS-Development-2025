@@ -42,7 +42,7 @@ EnablePaging:
     mov dword [PAGE_DIR], eax
 
     mov eax, PAGE_TABLE_768 | PRIV
-    mov dword [PAGE_DIR + 768 * 4], eax 
+    mov dword [PAGE_DIR + (768 * 4)], eax 
 
     ;------------------------------;
     ; Install directory table      ;
@@ -59,7 +59,7 @@ EnablePaging:
     mov cr0, eax
 
     mov eax, PAGE_TABLE_768
-    mov ebx, 0x10000 | PRIV
+    mov ebx, 0x100000 | PRIV
     mov ecx, PAGE_TABLE_ENTRIES
 
 .loop2:

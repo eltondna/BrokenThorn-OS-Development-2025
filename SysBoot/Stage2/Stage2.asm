@@ -69,7 +69,7 @@ main:
     mov ds, ax 
     mov es, ax
     mov fs, ax
-    mov ax, 0x9000
+    mov ax, 0x0000
     mov ss, ax
     mov sp, 0xFFFF
     sti
@@ -91,8 +91,7 @@ main:
     xor ebx, ebx
 
     ; Get MemoryMap entry
-    mov eax, 0x0
-    ; mov ds, ax
+    mov ds, ax
     mov di, 0x1000
     call BiosMemoryMap
 
@@ -118,8 +117,8 @@ main:
 ; Load Kernel			;
 ;-------------------------------;
     mov ebx, 0
-    mov bp, IMAGE_RMODE_BASE
-    mov si, ImageName
+    mov ebp, IMAGE_RMODE_BASE
+    mov esi, ImageName
     call LoadFile
     mov	dword [ImageSize], ecx
     cmp ax, 0
@@ -158,7 +157,7 @@ Stage3:
     mov ds, ax
     mov ss, ax
     mov es, ax
-    mov esp, 0x90000
+    mov esp, 9000h
     call ClrScr32
     call EnablePaging
 
@@ -218,7 +217,7 @@ EXECUTE:
     push ecx
     push dword boot_info
 	call	ebp               	      ; Execute Kernel
-
+    add		esp, 4
     cli
 	hlt
 
