@@ -11,8 +11,8 @@ InstallGDT:
     cli 
     pusha
     lgdt [toc]
-    popa
     sti 
+    popa
     ret
 
 ;*******************************************

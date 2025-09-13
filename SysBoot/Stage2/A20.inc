@@ -4,9 +4,8 @@
 
 EnableA20_KKbrd_Out:
     cli
-    pusha 
+
     call wait_input
-    
     
     ; First disable keyboard
     mov al, 0xAD
@@ -29,15 +28,13 @@ EnableA20_KKbrd_Out:
     call wait_input
 
     pop eax
-    or eax, 2       ; set bit 1 (enable a20)
+    or al, 2       ; set bit 1 (enable a20)
     out 0x60, al    ; write out data back to the output port
     call wait_input
 
     mov al , 0xAE   ; enable keyboard
     out 0x64, al
     call wait_input
-
-    popa 
     sti
     ret
 

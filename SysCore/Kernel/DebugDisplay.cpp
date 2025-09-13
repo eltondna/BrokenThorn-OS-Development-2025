@@ -6,7 +6,7 @@
 #define VID_MEMORY    0xB8000
 
 static unsigned int _xPos = 0, _yPos = 0;
-static unsigned int _startX = 0, _startY = 0;
+static unsigned int _startX =0, _startY = 0;
 static unsigned _color = 0;
 
 
@@ -15,7 +15,7 @@ static unsigned _color = 0;
 #endif
 
 
-void DebugPutc (unsigned char c){
+void DebugPutc (unsigned char c, bool autoInc = true){
     if (c == 0)
         return;
     // Start a new line
@@ -36,7 +36,10 @@ void DebugPutc (unsigned char c){
     unsigned char* p = (unsigned char *) VID_MEMORY + (_yPos * 80 + _xPos) * 2;
     *p++ = c;
     *p = _color;
-    _xPos++;
+
+    if (autoInc)
+        _xPos++;
+    
 }
 
 
@@ -82,10 +85,14 @@ unsigned DebugSetColor(const unsigned c){
 
 
 void  DebugGotoXY (unsigned x, unsigned y){
-    _xPos = x * 2;
-    _yPos = y * 2;
-    _startX = _xPos;
-    _startY = _yPos;
+
+    if (_xPos <= 80)
+	    _xPos = x;
+
+	if (_yPos <= 25)
+	    _yPos = y;
+
+
 }
 
 void DebugClrScr (const unsigned short c) {
@@ -174,9 +181,17 @@ int DebugPrintf (const char* str, ...){
 }
 
 void DebugGetXY(unsigned int * x, unsigned int * y){
+    if (x==0 || y==0)
+		return;
+    
     *x = _xPos;
     *y = _yPos;
 }
 
-int  DebugGetHorizontal(){return 80;}
-int  DebugGetVertical(){return 24;}
+void DebugGetStartXY(unsigned int * x, unsigned int * y){
+    *x = _startX;
+    *y = _startY;
+}
+
+int  DebugGetHorizontal(){return 79;}
+int  DebugGetVertical(){return 23;}

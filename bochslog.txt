@@ -21,7 +21,7 @@
 00000000000i[IMG   ] Disk image modules
 00000000000i[IMG   ]   flat concat sparse dll growing undoable volatile vmware3
 00000000000i[IMG   ]   vmware4 vbox vpc vvfat
-00000000000i[MEM0  ] allocated memory at 000001fc75884040. after alignment, vector=000001fc75885000, block_size = 128K
+00000000000i[MEM0  ] allocated memory at 0000018a1f2a1040. after alignment, vector=0000018a1f2a2000, block_size = 128K
 00000000000i[MEM0  ] 32.00MB
 00000000000i[MEM0  ] mem block size = 0x00020000, blocks=256
 00000000000i[MEM0  ] rom at 0xfffe0000/131072 ('C:\Program Files\Bochs-3.0\BIOS-bochs-latest')
@@ -33,7 +33,7 @@
 00000000000i[DEV   ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[PLUGIN] init_dev of 'cmos' plugin device by virtual method
 00000000000i[CMOS  ] Using local time for initial clock
-00000000000i[CMOS  ] Setting initial clock to: Sat Sep  6 13:53:16   2025 tz=utc (time0=1757166796)
+00000000000i[CMOS  ] Setting initial clock to: Wed Sep 10 21:38:20   2025 tz=utc (time0=1757540300)
 00000000000i[PLUGIN] init_dev of 'dma' plugin device by virtual method
 00000000000i[DMA   ] channel 4 used by cascade
 00000000000i[PLUGIN] init_dev of 'pic' plugin device by virtual method
@@ -190,76 +190,5 @@
 00001488136i[BXVGA ] VBE known Display Interface b0c0
 00001488176i[BXVGA ] VBE known Display Interface b0c5
 00001489597i[VBIOS ] VBE Bios ID: vbe.c 2025-01-08
-02621339849i[BIOS  ] Booting from 0000:7c00
-02642203010e[CPU0  ] interrupt(): gate descriptor is not valid sys seg (vector=0x0e)
-02642203010e[CPU0  ] interrupt(): gate descriptor is not valid sys seg (vector=0x08)
-02642203010i[CPU0  ] CPU is in protected mode (active)
-02642203010i[CPU0  ] CS.mode = 32 bit
-02642203010i[CPU0  ] SS.mode = 32 bit
-02642203010i[CPU0  ] EFER = 0x00000000: ffxsr nxe lma lme sce
-02642203010i[CPU0  ] | EAX=2badb002  EBX=00000000  ECX=00000006  EDX=00000025
-02642203010i[CPU0  ] | ESP=0008fff4  EBP=001007e0  ESI=c00000b2  EDI=00000aaf
-02642203010i[CPU0  ] | EFLAGS=00010002: id vip vif ac vm RF nt IOPL=0 of df if tf sf zf af pf cf
-02642203010i[CPU0  ] | SEG sltr(index|ti|rpl)     base    limit G D
-02642203010i[CPU0  ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
-02642203010i[CPU0  ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-02642203010i[CPU0  ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-02642203010i[CPU0  ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-02642203010i[CPU0  ] |  FS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-02642203010i[CPU0  ] |  GS:07c0( 0005| 0|  0) 00007c00 0000ffff 0 0
-02642203010i[CPU0  ] | EIP=001007e0 (001007e0)
-02642203010i[CPU0  ] | CR0=0xe0000011: PG CD NW ac wp ne ET ts em mp PE
-02642203010i[CPU0  ] | CR2=0x2badb002
-02642203010i[CPU0  ] | CR3=0x0009c000
-02642203010i[CPU0  ] | CR4=0x00000000: lass uintr pks cet pke smap smep keylock osxsave pcid fsgsbase smx vmx la57 umip osxmmexcpt osfxsr pce pge mce pae pse de tsd pvi vme
-02642203010e[CPU0  ] exception(): 3rd (13) exception with no resolution, shutdown status is 00h, resetting
-02642203010i[SYS   ] bx_pc_system_c::Reset(HARDWARE) called
-02642203010i[CPU0  ] cpu hardware reset
-02642203010i[APIC0 ] allocate APIC id=0 (MMIO enabled) to 0x0000fee00000
-02642203010i[CPU0  ] CPUID[0x00000000]: 00000002 756e6547 6c65746e 49656e69
-02642203010i[CPU0  ] CPUID[0x00000001]: 00000f12 00010800 00000000 0febfbff
-02642203010i[CPU0  ] CPUID[0x00000002]: 665b5001 00000000 00000000 007a7040
-02642203010i[CPU0  ] CPUID[0x80000000]: 80000004 00000000 00000000 00000000
-02642203010i[CPU0  ] CPUID[0x80000001]: 00000000 00000000 00000000 00000000
-02642203010i[CPU0  ] CPUID[0x80000002]: 20202020 20202020 20202020 6e492020
-02642203010i[CPU0  ] CPUID[0x80000003]: 286c6574 50202952 69746e65 52286d75
-02642203010i[CPU0  ] CPUID[0x80000004]: 20342029 20555043 30382e31 007a4847
-02642203010i[CPU0  ] CPU Features supported:
-02642203010i[CPU0  ] 		x87
-02642203010i[CPU0  ] 		486ni
-02642203010i[CPU0  ] 		pentium_ni
-02642203010i[CPU0  ] 		p6ni
-02642203010i[CPU0  ] 		mmx
-02642203010i[CPU0  ] 		debugext
-02642203010i[CPU0  ] 		vme
-02642203010i[CPU0  ] 		pse
-02642203010i[CPU0  ] 		pae
-02642203010i[CPU0  ] 		pge
-02642203010i[CPU0  ] 		mtrr
-02642203010i[CPU0  ] 		pat
-02642203010i[CPU0  ] 		sysenter_sysexit
-02642203010i[CPU0  ] 		clflush
-02642203010i[CPU0  ] 		sse
-02642203010i[CPU0  ] 		sse2
-02642203010i[CPU0  ] 		xapic
-02642203010i[PLUGIN] reset of 'pci' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'pci2isa' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'cmos' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'dma' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'pic' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'pit' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'vga' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'floppy' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'acpi' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'hpet' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'ioapic' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'keyboard' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'harddrv' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'pci_ide' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'unmapped' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'biosdev' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'speaker' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'extfpuirq' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'parallel' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'serial' plugin device by virtual method
-02642203010i[PLUGIN] reset of 'iodebug' plugin device by virtual method
+01671112879i[BIOS  ] Booting from 0000:7c00
+02206876361i[      ] Ctrl-C detected in signal handler.

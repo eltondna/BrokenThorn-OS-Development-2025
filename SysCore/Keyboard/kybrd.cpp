@@ -2,6 +2,7 @@
 #include "Hal.h"
 #include "string.h"
 #include "kybrd.h"
+#include "../Kernel/DebugDisplay.h"
 
 
 // Keyboard Encoder Configuration
@@ -83,7 +84,7 @@ enum KYBRD_ERROR {
 };
 
 // ! Current Scancode 
-static char _scancode;
+volatile char _scancode = 0;
 
 // ! Lock Key
 static bool _numlock, _scrolllock, _capslock;
@@ -200,7 +201,7 @@ const int INVALID_SCANCODE = 0;
 uint8_t     kybrd_ctrl_read_status();
 void        kybrd_ctrl_send_cmd(uint8_t);
 uint8_t     kybrd_enc_read_buf();
-void        kybrd_enc_send_cmd(uint8_t);
+void        _cdecl kybrd_enc_send_cmd(uint8_t);
 
 
 uint8_t kybrd_ctrl_read_status(){
@@ -210,7 +211,7 @@ uint8_t kybrd_ctrl_read_status(){
 void kybrd_ctrl_send_cmd(uint8_t cmd){
     while (true){
         // Input buffer full, dont write yet
-        if (kybrd_ctrl_read_status() & KYBRD_CTRL_STATS_MASK_IN_BUF == 0)
+        if ((kybrd_ctrl_read_status() & KYBRD_CTRL_STATS_MASK_IN_BUF) == 0)
             break;
     }
     outportb(KYBRD_CTRL_CMD_REG, cmd);
@@ -222,9 +223,9 @@ uint8_t kybrd_enc_read_buf(){
 
 // ! Both Controller and Encoder share input buffer 
 // ! Since Encoder cmd are first sent to controller 
-void kybrd_enc_send_cmd(uint8_t cmd){
+void _cdecl kybrd_enc_send_cmd(uint8_t cmd){
     while (true){
-        if (kybrd_ctrl_read_status() & KYBRD_CTRL_STATS_MASK_IN_BUF == 0)
+        if ((kybrd_ctrl_read_status() & KYBRD_CTRL_STATS_MASK_IN_BUF) == 0)
             break;
     }
     outportb(KYBRD_ENC_CMD_RED, cmd);
@@ -314,16 +315,19 @@ static void __cdecl kybrd_handler_c(void){
                         break;
                 }
             }
-            interruptdone(0);
+  
         }
     }
+    interruptdone(0);
 }
 
 extern "C" interrupt void i86_kybrd_irq(){
     #ifdef _MSC_VER
     _asm {
         pushad
+        cli
         call kybrd_handler_c
+        sti
         popad
         iretd
     } 
@@ -378,10 +382,9 @@ void kkybrd_discard_last_key(){
 
 void kkybrd_set_leds (bool num, bool caps, bool scroll){
     uint8_t data = 0;
-    data = scroll ? (data | 1) : (data & 1);
-    data = num    ? (data | 2) : (data & 2);
-    data = caps   ? (data | 4) : (data & 4);
-
+    data = scroll ? (data | 1) : (data & ~1);
+    data = num    ? (data | 2) : (data & ~2);
+    data = caps   ? (data | 4) : (data & ~4);
     kybrd_enc_send_cmd(KYBRD_ENC_CMD_SET_LED);
     kybrd_enc_send_cmd(data);
 }
@@ -510,7 +513,7 @@ void kkybrd_install(int irq){
     _scancode = 0;
 
     _numlock = _scrolllock = _capslock = false;
-    kkybrd_set_leds(false,false,false);
+    // kkybrd_set_leds(false,false,false);
 
     _shift = _alt = _ctrl = false;
 }

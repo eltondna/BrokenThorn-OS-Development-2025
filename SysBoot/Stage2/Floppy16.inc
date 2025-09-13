@@ -10,7 +10,7 @@ bpbSectorPerCluster     db 1
 bpbReservedSector       dw 1
 bpbNumberOfFATs         db 2
 bpbRootEntries          dw 224
-bpbTotalSector          dw 2280 
+bpbTotalSector          dw 2880 
 bpbMedia                db 0xF0
 bpbSectorPerFAT         dw 9
 bpbSectorPerTrack       dw 18
@@ -20,7 +20,7 @@ bpbTotalSectorBig       dd 0
 bsDriveNumber           db 0
 bsUnused                db 0
 bsExtBootSignature      db 0x29
-bsSerialNumber          dd 0xa1a2a3a4
+bsSerialNumber          dd 0xa0a1a2a3
 bsVolumeLabel           db "MOS FLOPPY "
 bsFileSystem            db "FAT12   "
 
@@ -57,8 +57,6 @@ ClusterLBA:
 ; Absolute Sector   : LBA % Sector per Track + 1
 ;************************************************;
 LBACHS:
-    pusha  
-    
     xor dx, dx
     div word [bpbSectorPerTrack]
     inc dl
@@ -69,7 +67,6 @@ LBACHS:
 
     mov byte [absoluteTrack], al
     mov byte [absoluteHead], dl
-    popa 
     ret
 
 ;************************************************;

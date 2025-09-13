@@ -7,10 +7,10 @@ extern void     DebugPuts (char* str);
 extern int      DebugPrintf (const char* str, ...);
 extern unsigned DebugSetColor (const unsigned c);
 extern void     DebugGotoXY (unsigned x, unsigned y);
-extern void     DebugPutc (unsigned char c);
+extern void     DebugPutc (unsigned char c, bool autoInc);
 extern void     DebugGetXY(unsigned int * x, unsigned int * y);
 extern int      DebugGetHorizontal();
 extern int      DebugGetVertical();
-
+extern void     DebugGetStartXY(unsigned int * x, unsigned int * y);
 
 #endif
