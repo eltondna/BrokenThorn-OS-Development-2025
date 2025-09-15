@@ -18,3 +18,4 @@ mmngr_phys.cpp vmmngr_pte.cpp vmmngr_pde.cpp mmngr_virtual.cpp ^
 ..\Lib\cstd.cpp ..\Lib\string.cpp ..\Lib\stdio.cpp ^
 ..\Hal\cpu.cpp ..\Hal\idt.cpp ..\Hal\gdt.cpp ..\Hal\Hal.cpp  ..\Hal\pic.cpp ..\Hal\pit.cpp ^
 ..\Keyboard\kybrd.cpp
+
