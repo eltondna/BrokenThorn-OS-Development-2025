@@ -6,6 +6,8 @@
 #include "mmngr_virtual.h"
 #include "../Keyboard/kybrd.h"
 #include "../Header/string.h"
+#include "../FloppyDisk/flpydisk.h"
+#include "../Header/stdio.h"
 
 // Format of each memory map entry
 struct memory_region{
@@ -59,24 +61,18 @@ void init(multiboot_info* bootinfo, uint32_t memorymapEntryCount){
 	uint32_t totalMemory = 0;
 
 	while (i < memorymapEntryCount){
-		//! sanity check; if type is > 4 mark it reserved
 		if (region[i].type > 4)
 			region[i].type = 2;
 
 		uint32_t start_address = region[i].start_Lo;
 		uint32_t length = region[i].sizeLo;
 
-		// DebugPrintf("Region %i Start: 0x%x%x        Length: 0x%x%x        Type:%s\n", i, 
-		// 	region[i].start_Hi, region[i].start_Lo, 
-		// 	region[i].sizeHi, region[i].sizeLo, 
-		// 	strMemoryTypes[region[i].type-1]);
 		++i;
 
 		if (totalMemory < start_address + length)
 			totalMemory = (start_address + length);
 	}
 	totalMemory = totalMemory >> 10;
-	// DebugPrintf("Total Memory Size: %d\n", totalMemory);
 	pmmngr_init(totalMemory, 0x100000 + kernelSize*512);
 
 	i = 0;
@@ -88,11 +84,18 @@ void init(multiboot_info* bootinfo, uint32_t memorymapEntryCount){
 	//! deinit the region the kernel is in as its in use
 	pmmngr_deinit_region (0x100000, kernelSize*512);
 
-	// DebugPrintf ("\npmm regions initialized: %i allocation blocks; used or reserved blocks: %i\nfree blocks: %i\n",
-	// 	pmmngr_get_total_block_count(),  pmmngr_get_use_block_count (), pmmngr_get_free_block_count ());
-
+	// ! Initialize VM
 	vmmngr_initialize();
+
+	// ! Install the keyboard to IRQ33, Use IRQ 1
 	kkybrd_install (33);
+
+	// ! FDC: Set Drive 0 as current drive
+	flpydsk_set_working_drive(0);
+
+	// ! Install floppy disk to IRQ 38, use IRQ 6
+	flpydsk_install(38);
+
 }
 
 
@@ -173,6 +176,32 @@ void get_cmd(char * buf, int n){
 	}
 	buf[i] = '\0';
 }
+
+// Read Sector command
+void cmd_read_sect(){
+	uint32_t sectornum = 0;
+	char sectornumbuf[4];
+	uint8_t * sector = 0;
+	DebugPrintf("\n\rPlease type in the sector number [0 is default] >");
+	get_cmd(sectornumbuf,3);
+	sectornum = atoi(sectornumbuf);
+
+	DebugPrintf("\n\rSector %i contents\n\n\r", sectornum);
+	sector = flpydsk_read_sector(sectornum);
+
+	if (sector != 0){
+		for (int c =0; c < 4; c++){
+			for (int j = 0; j < 128; j++){
+				DebugPrintf("0x%x ", sector[c + j]);
+			}
+			DebugPrintf("\n\rPress any key to continue\n\r");
+			getch();
+		}
+	}
+}
+
+
+
 bool run_cmd(char* cmd_buf){
 	if (strcmp(cmd_buf, "exit") == 0)
 		return true;
@@ -186,7 +215,10 @@ bool run_cmd(char* cmd_buf){
 		DebugPuts (" - exit: quits and halts the system\n");
 		DebugPuts (" - cls: clears the display\n");
 		DebugPuts (" - help: displays this message\n");
-	}else DebugPrintf("\nUnknown Command");
+		DebugPuts (" - read: reads a specific sector and displays it in hex\n");
+	}else if (strcmp(cmd_buf, "read") == 0)
+		cmd_read_sect();
+	else DebugPrintf("\nUnknown Command");
 
 	return false;
 }

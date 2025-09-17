@@ -32,7 +32,7 @@ enum FLPYDSK_CMD{
 // Extension command -> Could be used with command byte
 enum FLPYDSK_CMD_EXT{
     FDC_CMD_EXT_SKIP        = 0x20,
-    FDC_CMD_EXT_DENSITY     = 0x40,
+    FDC_CMD_EXT_DENSITY     = 0x40,  // Computer usually set this
     FDC_CMD_EXT_MULTITRACK  = 0x80
 };
 
@@ -245,30 +245,167 @@ void flpydsk_drive_data(uint32_t stepr, uint32_t loadt, uint32_t unloadt, bool d
 }
 
 int flpydsk_calibrate(uint32_t drive){
+    uint32_t st0, cyl;
+
+    if (drive == 4)
+        return -2;
     
+    // Turn on the motor
+    flpydsk_control_motor(true);
+
+    for (int i =0; i < 10; i++){
+        flpydsk_send_command(FDC_CMD_CALIBRATE);
+        flpydsk_send_command(drive);
+        flpydsk_wait_irq();
+        flpydsk_check_int(&st0, &cyl);
+
+        if (!cyl){
+            flpydsk_control_motor(false);
+            return 0;
+        }
+
+        flpydsk_control_motor(false);
+        return -1;
+    }
+}
+
+void 
+flpydsk_disable_controller(){
+    flpydsk_write_dor(0);
+}
+
+void 
+flpydsk_enable_controller(){
+    flpydsk_write_dor(FLPYDSK_DOR_MASK_RESET | FLPYDSK_DOR_MASK_DMA); 
+}
 
 
+void 
+flpydsk_reset(){
+    uint32_t st0, cyl;
+    flpydsk_disable_controller();
+    flpydsk_enable_controller();
+    flpydsk_wait_irq();
+
+    // ! Send CHECK_INT / SENSE INTERRUPT command to all drive
+    for (int i =0; i < 4; i++){
+        flpydsk_check_int(&st0, &cyl);
+    }
+
+    // ! Transfer speed 500kb/s
+    flpydsk_write_ccr(0);
+
+    // ! Pass mechanical drive info. Step rate = 3ms , unload time = 240 ms , load time = 16ms
+    flpydsk_drive_data(3,16,240,true);
+
+    // ! Calibrate the disk
+    flpydsk_calibrate(_CurrentDrive);
+
+}
+
+void 
+flpydsk_read_sector_imp(uint8_t head , uint8_t track , uint8_t sector){
+
+    // ! Set the DMA for read transfer
+    flpydsk_dma_read();
+
+    // ! Read in a sector 
+    flpydsk_send_command(FDC_CMD_READ_SECT | FDC_CMD_EXT_MULTITRACK | FDC_CMD_EXT_SKIP | FDC_CMD_EXT_DENSITY);
+
+    flpydsk_send_command(head << 2 | _CurrentDrive);
+    flpydsk_send_command(track);
+    flpydsk_send_command(head);
+    flpydsk_send_command(sector);
+    flpydsk_send_command(FLPYDSK_SECTOR_DTL_512);
+    flpydsk_send_command(((sector + 1) >= FLPY_SECTORS_PER_TRACK ) ? FLPY_SECTORS_PER_TRACK : sector + 1);
+    flpydsk_send_command(FLPYDSK_GAP3_LENGTH_3_5);
+    // Dont care, just use 512 bytes
+    flpydsk_send_command (0xff);
+    
+    // Wait for DMA finish 
+    flpydsk_wait_irq();
+
+	for (int j=0; j<7; j++)
+		flpydsk_read_data ();
+
+    uint32_t st0, cyl;
+    // ! Let the FDC know we handled interrupt
+    flpydsk_check_int(&st0, &cyl);
+}
+
+int 
+flpydsk_seek(uint32_t cyl, uint32_t head){
+    uint32_t st0, cyl0;
+
+    if (_CurrentDrive >= 4)
+        return -1;
+    
+    for (int i =0; i < 10; i++){
+        // ! Send the command 
+        flpydsk_send_command(FDC_CMD_SEEK);
+        flpydsk_send_command((head) << 2 |_CurrentDrive);
+        flpydsk_send_command(cyl);
+
+        // ! Wait for the results phase IRQ
+        flpydsk_wait_irq();
+        flpydsk_check_int(&st0, &cyl0);
+
+        // ! Found the cylinder ? 
+        if (cyl0 == cyl)
+            return 0;
+    }
+
+    return -1;
+}
+
+void 
+flpydsk_lba_to_chs(int lba, int * head, int *track, int *sector){
+    *head   =  (lba % (FLPY_SECTORS_PER_TRACK * 2)) / (FLPY_SECTORS_PER_TRACK);
+    *track  = lba / FLPY_SECTORS_PER_TRACK;
+    *sector = lba % FLPY_SECTORS_PER_TRACK + 1 ;
 }
 
 
 void        
 flpydsk_install(int irq){
-    
+   setvect(irq, i86_flpy_irq);
 
+   flpydsk_initialize_dma();
+
+   flpydsk_reset();
+   
+   flpydsk_drive_data(13, 1 , 0xf, true);
 }
+
+
 void 
 flpydsk_set_working_drive(uint8_t drive){
-
+    if (drive < 4)
+        _CurrentDrive = drive;
 }
+
 uint8_t 
 flpydsk_get_working_drive(){
-
+    return _CurrentDrive;
 }
+
 uint8_t*
 flpydsk_read_sector(int sectorLBA){
+    if (_CurrentDrive >= 4)
+        return 0;
+    
+    // Convert LBA sector to CHS
+    int head = 0, track = 0, sector = 1;
+    flpydsk_lba_to_chs(sectorLBA, &head, &track, &sector);
 
-}
-void 
-flpydsk_lb_to_chs(int lba, int * head, int *track, int *sector){
+    // Turn motor on and seek to track
+    flpydsk_control_motor(true);
+    if (flpydsk_seek(track, head)!= 0)
+        return 0;
+    flpydsk_read_sector_imp(head, track, sector);
+    flpydsk_control_motor(false);
 
+    return (uint8_t *) DMA_BUFFER;
 }
+
+

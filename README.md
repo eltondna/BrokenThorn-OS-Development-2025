@@ -21,3 +21,10 @@ Example: at C=4, H=0, S=5 : want to move to C=9, H=1, S=30
 4. Rotational latenc: the controller watches the IDs the track spins until S = 30
 5. Read/Write sector via DMA/PIO
 6. Command ends → head unload time counts once, then the head may lift
+
+
+
+In the tutorial `Read Sector` section, there is a slightly misleading point, the parameter `Track Length` should be `EOT = End-Of-Track sector number`, the last sector read up to in this operation. 
+
+i.e. read sector 5 - 10, we should pass in 11
+
